@@ -367,6 +367,7 @@
 
                 // console.log(res);
                 $('.scolor02').children('em').html(res.data.all_count);
+
                 $('.scolor03').children('em').html(res.data.day_count);
 
             }
@@ -374,12 +375,14 @@
 
         // 获取每日新增文章数量
         $.get({
+
             url: "http://localhost:8000/admin/month_article_count",
+
             success: function (res) {
 
-                console.log(res);
+                // console.log(res);
                 $('.spannel').eq(1).children('em').html(res.data.day_count);
-
+                
             }
         });
 
