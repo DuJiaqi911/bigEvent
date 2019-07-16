@@ -304,7 +304,7 @@
 
     <script>
         // 打开页面直接调用函数将文章显示出
-        getDate();
+        getDate(1);
         // 打开页面就发请求渲染到页面上
         $.get({
             url: "http://localhost:8000/admin/category_search",
@@ -315,37 +315,61 @@
             }
         });
 
+        var $pagination = $('.pagination-sm');
+        var mytotalPages = 10;
+        var defaultOpts = {
+            totalPages: mytotalPages,
+            visiblePages: 7,
+            first: '首页',
+            last: '尾页',
+            prev: "上一页",
+            next: "下一页",
+            onPageClick: function (event, page) {
+
+                // console.log(event);//事件对象
+                // console.log(page);//点击的页码
+                getDate(page);
+            }
+        };
+        $pagination.twbsPagination(defaultOpts);
+
         // 声明一个函数用来发送ajax请求得到文章明细
-        function getDate() {
+        function getDate(mypage) {
 
             $.get({
                 url: "http://localhost:8000/admin/search",
                 data: {
                     type: $('#selCategory').val(),
                     state: $('#selStatus').val(),
-                    page: 1,
+                    page: mypage,
                     perpage: 7
                 },
                 success: function (res) {
 
-                    console.log(res);
+                    // console.log(res);
                     var html = template('tpl2', res);
                     $('tbody').html(html);
 
+
+                    if (mytotalPages != res.totalPages) {
+                        mytotalPages = res.totalPages;
+                        // var currentPage = $pagination.twbsPagination('getCurrentPage');
+                        $pagination.twbsPagination('destroy');
+                        $pagination.twbsPagination($.extend({}, defaultOpts, {
+                            startPage: 1,
+                            totalPages: totalPages
+                        }));
+                    }
                 }
             });
         }
-        // 给筛选按钮添加点击事件
+
+
+
+        // // 给筛选按钮添加点击事件
         $('#btnSearch').click(function (e) {
             e.preventDefault();
-            getDate();
-            $('.pagination-sm').twbsPagination({
-                totalPages: 35,
-                visiblePages: 7,
-                onPageClick: function (event, page) {
-                    $('#page-content').text(page);
-                }
-            });
+            getDate(1);
         });
 
     </script>
