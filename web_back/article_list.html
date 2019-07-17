@@ -316,7 +316,7 @@
         });
 
         var $pagination = $('.pagination-sm');
-        var mytotalPages = 10;
+        var mytotalPages = 20;
         var defaultOpts = {
             totalPages: mytotalPages,
             visiblePages: 7,
@@ -351,13 +351,13 @@
                     $('tbody').html(html);
 
 
-                    if (mytotalPages != res.totalPages) {
-                        mytotalPages = res.totalPages;
+                    if (mytotalPages != res.totalPage) {
+                        mytotalPages = res.totalPage;
                         // var currentPage = $pagination.twbsPagination('getCurrentPage');
                         $pagination.twbsPagination('destroy');
                         $pagination.twbsPagination($.extend({}, defaultOpts, {
                             startPage: 1,
-                            totalPages: totalPages
+                            totalPages: mytotalPages
                         }));
                     }
                 }
